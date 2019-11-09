@@ -44,18 +44,13 @@ rollBtn.addEventListener('click', function() {
         //Next player - toggle the active class to so that the styling changes as well
         if(activePlayer === 0){
             activePlayer = 1;
-
-            document.querySelector('.player-0-panel').classList.remove('active');
-            document.querySelector('.player-1-panel').classList.add('active');
         }
         else {
             activePlayer = 0;
-
-            document.querySelector('.player-1-panel').classList.remove('active');
-            document.querySelector('.player-0-panel').classList.add('active');
         }
-
-        
+        document.querySelector('.player-0-panel').classList.toggle('active');
+        document.querySelector('.player-1-panel').classList.toggle('active');
+        diceObj.style.display = 'none';
     }    
 });
 
