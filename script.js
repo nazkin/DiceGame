@@ -24,12 +24,38 @@ diceObj.style.display = 'none';
 
 //Event handler for the 'Roll' button
 var rollBtn = document.querySelector('.btn-roll');
+
 rollBtn.addEventListener('click', function() {
     // Random number for the diceroll 
         diceRoll = Math.floor((Math.random()*6) + 1);
     //Connect the random number to our dicephotos to display the right dice and change img
         diceObj.style.display = "block";
         diceObj.src = "./photos/dice-" + diceRoll + ".png";
-    //Update the round-score if the the dice roll is more than 1 
+    //Update the round-score if the the dice roll is more than 1 and switch player when 1 is rolled
+    if(diceRoll > 1){
+        //sum up your round score 
+        roundScore += diceRoll;
+        document.querySelector("#current-" + activePlayer).textContent = roundScore;
+    }
+    else {
+        //Clear the score for that round 
+        roundScore = 0;
+        document.querySelector('#current-' + activePlayer).textContent = "0"; 
+        //Next player - toggle the active class to so that the styling changes as well
+        if(activePlayer === 0){
+            activePlayer = 1;
 
+            document.querySelector('.player-0-panel').classList.remove('active');
+            document.querySelector('.player-1-panel').classList.add('active');
+        }
+        else {
+            activePlayer = 0;
+
+            document.querySelector('.player-1-panel').classList.remove('active');
+            document.querySelector('.player-0-panel').classList.add('active');
+        }
+
+        
+    }    
 });
+
