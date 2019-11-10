@@ -11,7 +11,7 @@ var roundScore = 0;
 var activePlayer = 0;
 //diceRoll variable keeps track of a random number rolled between 1 and 6 representing the dice roll
 var diceRoll;
-
+var gamePlaying = true;
 //********************************DOM manipulations 
 
 var diceObj = document.querySelector('.dice');
@@ -26,25 +26,29 @@ diceObj.style.display = 'none';
 //Event handler for the 'Roll' button
 var rollBtn = document.querySelector('.btn-roll');
 rollBtn.addEventListener('click', function() {
-    // Random number for the diceroll 
-        diceRoll = Math.floor((Math.random()*6) + 1);
-    //Connect the random number to our dicephotos to display the right dice and change img
-        diceObj.style.display = "block";
-        diceObj.src = "./photos/dice-" + diceRoll + ".png";
-    //Update the round-score if the the dice roll is more than 1 and switch player when 1 is rolled
-    if(diceRoll > 1){
-        //sum up your round score 
-        roundScore += diceRoll;
-        document.querySelector("#current-" + activePlayer).textContent = roundScore;
+    if(gamePlaying) {
+         // Random number for the diceroll 
+         diceRoll = Math.floor((Math.random()*6) + 1);
+         //Connect the random number to our dicephotos to display the right dice and change img
+             diceObj.style.display = "block";
+             diceObj.src = "./photos/dice-" + diceRoll + ".png";
+         //Update the round-score if the the dice roll is more than 1 and switch player when 1 is rolled
+         if(diceRoll > 1){
+             //sum up your round score 
+             roundScore += diceRoll;
+             document.querySelector("#current-" + activePlayer).textContent = roundScore;
+         }
+         else {
+             switchPlayer();
+         } 
     }
-    else {
-        switchPlayer();
-    }    
+     
 });
 //Implementing the Hold button that allows a player to save his or her score
 var holdBtn = document.querySelector('.btn-hold');
 holdBtn.addEventListener('click', function() {
-    //Update the final scores 
+    if(gamePlaying) {
+         //Update the final scores 
     finalScore[activePlayer] += roundScore;
     //Update the DOM 
     document.querySelector('#score-' + activePlayer).textContent = finalScore[activePlayer];
@@ -55,11 +59,14 @@ holdBtn.addEventListener('click', function() {
         document.querySelector('#name-' + activePlayer).textContent = "WINNER";
         diceObj.style.display = "none";
         document.querySelector('.player-'+ activePlayer +'-panel').classList.add('winner');
+        gamePlaying = false;
     }
     else {
     //Switch to the next player
     switchPlayer();
     }
+}
+   
 });
 
 var newGameBtn = document.querySelector('.btn-new');
@@ -70,6 +77,7 @@ function initGame() {
     roundScore = 0;
     finalScore = [0,0];
     activePlayer = 0;
+    gamePlaying = true;
     document.querySelector("#current-0").textContent = "0";
     document.querySelector("#current-1").textContent = "0";
     document.querySelector("#score-0").textContent = "0";
@@ -88,7 +96,7 @@ function initGame() {
 function switchPlayer() {
     //Clear the score for that round 
    
-
+    roundScore = 0;
     document.querySelector('#current-' + activePlayer).textContent = "0"; 
     //Next player - toggle the active class to so that the styling changes as well
     if(activePlayer === 0){
